@@ -2,6 +2,24 @@ import React from "react";
 import { Label, Input, Button } from "reactstrap";
 
 class Login extends React.Component {
+  handleClick = e => {
+    e.preventDefault();
+    let body = {
+      user_email: "onsddd2123@naver.com",
+      user_password: "12300000"
+    };
+    fetch("http://localhost:3000/sign/signin", {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(res => {
+        alert("로그인 완료");
+      });
+  };
   render() {
     return (
       <div>
@@ -72,6 +90,7 @@ class Login extends React.Component {
               fontSize: "23px",
               verticalAlign: "middle"
             }}
+            onClick={this.handleClick}
           >
             Login
           </Button>
