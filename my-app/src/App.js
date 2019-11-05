@@ -1,16 +1,20 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Header from "./components/Header";
 import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 
 class App extends React.Component {
   render() {
     return (
       <div>
         <Header />
-        <div style={{ backgroundColor: "", padding: "180px 0  250px 0" }}>
+        <div>
           <Router>
-            <Route exact path="/" component={Login} />
+            <Switch>
+              <Route exact path="/" component={Login} />
+              <Route path="/signup" component={SignUp} />
+            </Switch>
           </Router>
         </div>
       </div>

@@ -1,28 +1,29 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Label, Input, Button } from "reactstrap";
 
 class Login extends React.Component {
-  handleClick = e => {
-    e.preventDefault();
-    let body = {
-      user_email: "onsddd2123@naver.com",
-      user_password: "12300000"
-    };
-    fetch("http://localhost:3000/sign/signin", {
-      method: "POST",
-      body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(res => res.json())
-      .then(res => {
-        alert("로그인 완료");
-      });
-  };
+  // handleClick = e => {
+  //   e.preventDefault();
+  //   let body = {
+  //     user_email: "onsddd2123@naver.com",
+  //     user_password: "12300000"
+  //   };
+  //   fetch("http://localhost:3000/sign/signin", {
+  //     method: "POST",
+  //     body: JSON.stringify(body),
+  //     headers: {
+  //       "Content-Type": "application/json"
+  //     }
+  //   })
+  //     .then(res => res.json())
+  //     .then(res => {
+  //       alert("로그인 완료");
+  //     });
+  // };
   render() {
     return (
-      <div>
+      <div style={{ margin: "130px 0 200px 0" }}>
         <div
           style={{
             width: "350px",
@@ -66,7 +67,9 @@ class Login extends React.Component {
             }}
           >
             Not registered?
-            <span style={{ color: "#ffd700" }}> Create an account</span>
+            <span style={{ color: "#ffd700" }}>
+              <Link to="/signup"> Create an account</Link>
+            </span>
           </span>
         </div>
         <div
