@@ -5,14 +5,82 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user_id: "",
+      isLogin: "",
+      user_email: "",
+      user_password: ""
+    };
+    console.log(localStorage);
+  }
+
+  handleClickEmail = e => {
+    e.preventDefault();
+    this.setState({
+      user_email: e.target.value
+    });
+  };
+
+  handleClickPw = e => {
+    e.preventDefault();
+    this.setState({
+      user_password: e.target.value
+    });
+  };
+
+  handleClick = e => {
+    e.preventDefault();
+    let body = {
+      user_email: this.state.user_email,
+      user_password: this.state.user_password
+    };
+    console.log(body);
+    fetch("http://localhost:3000/sign/signin", {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(json => {
+        alert("로그인 완료");
+        console.log(json);
+        return json;
+      })
+      .then(json => {
+        this.setState({ isLogin: json.isLogin, user_id: json.user_id });
+      })
+      .catch(alert("다시 로그인을 시도하세요"));
+  };
+
+  // this.setState({
+  //   user_id: e.target.value,
+  //   login: localStorajsone.token !== undefined
+  // });
+
   render() {
+    console.log("제발나와줘...", this.state);
     return (
       <div>
         <Header />
         <div>
           <Router>
             <Switch>
-              <Route exact path="/" component={Login} />
+              <Route
+                exact
+                path="/"
+                render={() => (
+                  <Login
+                    handleClick={this.handleClick}
+                    value={this.state}
+                    handleClickEmail={this.handleClickEmail}
+                    handleClickPw={this.handleClickPw}
+                  />
+                )}
+              />
               <Route path="/signup" component={SignUp} />
             </Switch>
           </Router>
