@@ -3,6 +3,15 @@ import { Link } from "react-router-dom";
 import { Label, Input, Button } from "reactstrap";
 
 class Login extends React.Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = { user_password: "" };
+  // }
+  // handlePassword = e => {
+  //   this.setState({
+  //     user_password: e.target.user_password
+  //   });
+  // };
   // handleClick = e => {
   //   e.preventDefault();
   //   let body = {
@@ -21,7 +30,10 @@ class Login extends React.Component {
   //       alert("로그인 완료");
   //     });
   // };
+
   render() {
+    const { handleClick, handleClickEmail, handleClickPw } = this.props;
+
     return (
       <div style={{ margin: "130px 0 200px 0" }}>
         <div
@@ -38,14 +50,15 @@ class Login extends React.Component {
         >
           <h3>LOGIN</h3>
           <div style={{ marginTop: "25px" }}>
-            <Label for="exampleId" style={{ fontSize: "18px" }}>
-              User ID
+            <Label for="exampleEmail" style={{ fontSize: "18px" }}>
+              User Email
             </Label>
             <Input
-              type="id"
-              name="id"
-              id="exampleId"
-              placeholder="ID를 입력하세요"
+              type="email"
+              name="user_email"
+              id="user_email"
+              placeholder="Email를 입력하세요"
+              onChange={handleClickEmail}
             />
           </div>
           <div style={{ margin: "25px 0 25px 0" }}>
@@ -57,6 +70,7 @@ class Login extends React.Component {
               name="password"
               id="examplePassword"
               placeholder="password를 입력하세요"
+              onChange={handleClickPw}
             />
           </div>
           <span
@@ -93,7 +107,7 @@ class Login extends React.Component {
               fontSize: "23px",
               verticalAlign: "middle"
             }}
-            onClick={this.handleClick}
+            onClick={handleClick}
           >
             Login
           </Button>
