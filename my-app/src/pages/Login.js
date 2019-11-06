@@ -6,7 +6,9 @@ class Login extends React.Component {
   // constructor(props) {
   //   super(props);
   //   this.state = { user_password: "" };
+  //   console.log("스토리쥐!!!!", window.sessionStorage);
   // }
+
   // handlePassword = e => {
   //   this.setState({
   //     user_password: e.target.user_password
@@ -15,7 +17,7 @@ class Login extends React.Component {
   // handleClick = e => {
   //   e.preventDefault();
   //   let body = {
-  //     user_email: "onsddd2123@naver.com",
+  //     us시r_email: "onsddd2123@naver.com",
   //     user_password: "12300000"
   //   };
   //   fetch("http://localhost:3000/sign/signin", {
