@@ -13,7 +13,7 @@ class App extends React.Component {
       user_email: "",
       user_password: ""
     };
-    console.log(localStorage);
+    console.log("sessionStorage", sessionStorage);
   }
 
   handleClickEmail = e => {
@@ -46,14 +46,21 @@ class App extends React.Component {
     })
       .then(res => res.json())
       .then(json => {
-        alert("로그인 완료");
         console.log(json);
         return json;
       })
       .then(json => {
-        this.setState({ isLogin: json.isLogin, user_id: json.user_id });
-      })
-      .catch(alert("다시 로그인을 시도하세요"));
+        if (json.isLogin) {
+          console.log(json.token);
+          sessionStorage.setItem("token", json.token);
+          console.log(sessionStorage.getItem("token"));
+          this.setState({ isLogin: json.isLogin, user_id: json.user_id });
+          alert("로그인 완료");
+        } else {
+          alert("다시 로그인을 시도해주세요");
+        }
+      });
+    console.log("sessionStorage", sessionStorage);
   };
 
   // this.setState({
