@@ -1,8 +1,9 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Header from "./components/Header";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import Pages from "./pages/Pages";
 
 class App extends React.Component {
   constructor(props) {
@@ -28,6 +29,15 @@ class App extends React.Component {
     this.setState({
       user_password: e.target.value
     });
+  };
+
+  handleClickLogout = () => {
+    sessionStorage.removeItem("token");
+    alert("로그아웃 되었습니다.");
+    this.setState({
+      isLogin: false
+    });
+    console.log(sessionStorage.getItem("token"));
   };
 
   handleClick = e => {
@@ -60,7 +70,6 @@ class App extends React.Component {
           alert("다시 로그인을 시도해주세요");
         }
       });
-    console.log("sessionStorage", sessionStorage);
   };
 
   // this.setState({
@@ -69,27 +78,36 @@ class App extends React.Component {
   // });
 
   render() {
-    console.log("제발나와줘...", this.state);
+    console.log("자지마아~~~", this.state.isLogin);
     return (
       <div>
         <Header />
         <div>
           <Router>
-            <Switch>
-              <Route
-                exact
-                path="/"
-                render={() => (
-                  <Login
-                    handleClick={this.handleClick}
-                    value={this.state}
-                    handleClickEmail={this.handleClickEmail}
-                    handleClickPw={this.handleClickPw}
-                  />
-                )}
-              />
-              <Route path="/signup" component={SignUp} />
-            </Switch>
+            {sessionStorage.getItem("token") ? (
+              <Redirect to="/pages" />
+            ) : (
+              <Redirect to="/" />
+            )}
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <Login
+                  handleClick={this.handleClick}
+                  value={this.state}
+                  handleClickEmail={this.handleClickEmail}
+                  handleClickPw={this.handleClickPw}
+                />
+              )}
+            />
+            <Route
+              path="/pages"
+              render={() => (
+                <Pages handleClickLogout={this.handleClickLogout} />
+              )}
+            />
+            <Route path="/signup" component={SignUp} />
           </Router>
         </div>
       </div>
