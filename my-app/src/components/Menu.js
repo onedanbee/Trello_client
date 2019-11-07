@@ -7,7 +7,7 @@ const Menu = props => {
     <div style={{ width: "100%", backgroundColor: "#ffc266" }}>
       <Nav>
         <NavItem style={{ margin: "0 40px 0 20px" }}>
-          <Link style={{ color: "white" }} to="/board">
+          <Link style={{ color: "white" }} to="/pages">
             board
           </Link>
         </NavItem>

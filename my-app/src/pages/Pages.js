@@ -1,19 +1,35 @@
 import React, { Component } from "react";
-import Menu from "../components/Menu";
-import Board from "../pages/Board";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { Button } from "reactstrap";
+
 class Pages extends Component {
   constructor(props) {
     super(props);
+    this.state = { boardlist: [] };
+
+    this.componentDidMount = async () => {
+      let board = await this.fetchboard();
+      this.setState({ boardlist: board });
+    };
+    this.fetchboard = async () => {
+      return await fetch("http://localhost:3000/boards/", {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          token: sessionStorage.getItem("token")
+        }
+      }).then(res => res.json());
+    };
     console.log("로그아웃 할거야", props);
   }
   render() {
     return (
       <div>
-        <Menu handleClickLogout={this.props.handleClickLogout} />
-        <Router>
-          <Route path="/board" component={Board} />
-        </Router>
+        {this.state.boardlist.map(val => (
+          <Link to={`/board/${val.B_key}`}>
+            <Button>{val.b_title}</Button>
+          </Link>
+        ))}
       </div>
     );
   }
