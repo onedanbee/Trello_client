@@ -4,7 +4,9 @@ import Header from "./components/Header";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Pages from "./pages/Pages";
-
+// import Board from "./pages/Board";
+import Menu from "./components/Menu";
+import Container from "./pages/Container";
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -78,12 +80,17 @@ class App extends React.Component {
   // });
 
   render() {
-    console.log("자지마아~~~", this.state.isLogin);
+    console.log("token아 있니", this.state.isLogin);
     return (
       <div>
         <Header />
+
         <div>
           <Router>
+            {sessionStorage.getItem("token") ? (
+              <Menu handleClickLogout={this.handleClickLogout} />
+            ) : null}
+
             {sessionStorage.getItem("token") ? (
               <Redirect to="/pages" />
             ) : (
@@ -108,6 +115,7 @@ class App extends React.Component {
               )}
             />
             <Route path="/signup" component={SignUp} />
+            <Route path="/board/:B_key" component={Container} />
           </Router>
         </div>
       </div>
