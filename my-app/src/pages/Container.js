@@ -9,7 +9,9 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  CardText
+  CardText,
+  InputGroup,
+  InputGroupAddon
 } from "reactstrap";
 
 class Container extends Component {
@@ -53,7 +55,6 @@ class Container extends Component {
   toggle = e => {
     this.setState({ modal: true, card_n: e.target.id });
   };
-
   togglecancel = () => {
     this.setState({ modal: false });
   };
@@ -66,7 +67,7 @@ class Container extends Component {
   };
 
   handleClickTest = async e => {
-    console.log(e.target);
+    console.log("event", e.target);
     await fetch(`http://localhost:3000/cards/${e.target.id}`, {
       method: "DELETE",
       headers: {
@@ -76,7 +77,7 @@ class Container extends Component {
     }).then(
       res => res.json(),
 
-      this.setState({ modal: false, card_update: true }),
+      this.setState({ card_update: true }),
       alert("삭제가 완료")
     );
     this.fetchcontainer();
@@ -98,7 +99,28 @@ class Container extends Component {
       alert("수정이 완료되었습니다.")
     );
     this.fetchcontainer();
-    console.log("내 옆 바보래요");
+  };
+
+  hadleClickAddtodo = e => {
+    console.log(e.target.id);
+    let body = {
+      card_text: this.state.card_modify,
+      C_key: e.target.id
+    };
+    fetch(`http://localhost:3000/cards/`, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-type": "application/json",
+        token: sessionStorage.getItem("token")
+      }
+    }).then(
+      res => res.json(),
+
+      this.setState({ modal: false, card_update: true }),
+      alert("추가 되었습니다.")
+    );
+    this.fetchcontainer();
   };
   render() {
     console.log("state :", this.state);
@@ -131,7 +153,7 @@ class Container extends Component {
 
                       <Modal isOpen={this.state.modal} toggle={this.toggle}>
                         <ModalHeader toggle={this.togglecancel}>
-                          Modify TODO
+                          What's your Todo?
                         </ModalHeader>
                         <ModalBody>
                           <Input
@@ -153,23 +175,59 @@ class Container extends Component {
                         </ModalFooter>
                       </Modal>
                       <Button
-                        close
-                        aria-label="Cancel"
-                        onClick={this.handleClickTest}
+                        id={card.card_key}
                         style={{
                           float: "left",
-                          width: "10%"
+                          width: "5%",
+                          height: "5%",
+                          backgroundColor: "white",
+                          color: "black",
+                          border: "0px"
                         }}
-                        id={card.card_key}
                         onClick={this.handleClickTest}
-                      ></Button>
+                      >
+                        x
+                      </Button>
                     </CardBody>
                   </Card>
                 ))}
+                {/* <Button
+                  onClick={this.toggle}
+                  isOpen={this.state.modal}
+                  container_key={val.C_key}
+                >
+                  Add card
+                </Button> */}
+                <InputGroup>
+                  <Input onChange={this.handleClickTitle} />
+                  <InputGroupAddon addonType="append">
+                    <Button
+                      color="secondary"
+                      id={val.C_key}
+                      onClick={this.hadleClickAddtodo}
+                    >
+                      Add Todo
+                    </Button>
+                  </InputGroupAddon>
+                </InputGroup>
               </span>
             </div>
           ))}
         </div>
+        <InputGroup
+          style={{
+            float: "left",
+            margin: "0 40px 30px 0",
+            width: "300px"
+          }}
+        >
+          <Input onChange={this.handleClickTitle} placeholder="Add title" />
+          <InputGroupAddon addonType="append">
+            <Button color="secondary" onClick={this.hadleClickAddtodo}>
+              To the Right!
+            </Button>
+          </InputGroupAddon>
+        </InputGroup>
       </div>
     );
   }
