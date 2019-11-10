@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { Button } from "reactstrap";
 
 class Pages extends Component {
@@ -25,6 +25,8 @@ class Pages extends Component {
   render() {
     return (
       <div>
+        {!sessionStorage.getItem("token") && <Redirect to="/" />}
+
         {this.state.boardlist.map(val => (
           <Link to={`/board/${val.B_key}`}>
             <Button>{val.b_title}</Button>
