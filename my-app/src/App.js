@@ -91,11 +91,11 @@ class App extends React.Component {
               <Menu handleClickLogout={this.handleClickLogout} />
             ) : null}
 
-            {sessionStorage.getItem("token") ? (
+            {/* {sessionStorage.getItem("token") ? (
               <Redirect to="/pages" />
             ) : (
               <Redirect to="/" />
-            )}
+            )} */}
             <Route
               exact
               path="/"

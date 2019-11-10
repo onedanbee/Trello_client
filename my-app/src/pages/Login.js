@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { Label, Input, Button } from "reactstrap";
 
 class Login extends React.Component {
@@ -8,6 +8,7 @@ class Login extends React.Component {
 
     return (
       <div style={{ margin: "130px 0 200px 0" }}>
+        {sessionStorage.getItem("token") && <Redirect to="/pages" />}
         <div
           style={{
             width: "350px",
