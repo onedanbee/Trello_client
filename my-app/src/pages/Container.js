@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import AddTitle from "../components/AddTitle";
 import {
   Card,
   CardHeader,
@@ -25,7 +26,10 @@ class Container extends Component {
       modal: false,
       card_modify: "",
       card_n: "",
-      card_update: false
+      card_update: false,
+      addBtn: false,
+      addcontainer: "",
+      addfx: this.onChangeTitle
     };
 
     // , click: "false", title: "", container_key:""
@@ -101,13 +105,13 @@ class Container extends Component {
     this.fetchcontainer();
   };
 
-  hadleClickAddtodo = e => {
+  hadleClickAddtodo = async e => {
     console.log(e.target.id);
     let body = {
       card_text: this.state.card_modify,
       C_key: e.target.id
     };
-    fetch(`http://localhost:3000/cards/`, {
+    await fetch(`http://localhost:3000/cards/`, {
       method: "POST",
       body: JSON.stringify(body),
       headers: {
@@ -121,6 +125,24 @@ class Container extends Component {
       alert("추가 되었습니다.")
     );
     this.fetchcontainer();
+  };
+
+  handleClickAddBtn = () => {
+    this.setState({
+      addBtn: true
+    });
+  };
+
+  handleClickCancelBtn = () => {
+    this.setState({
+      addBtn: false
+    });
+  };
+
+  onChangeTitle = e => {
+    this.setState({
+      addcontainer: e.target.value
+    });
   };
   render() {
     console.log("state :", this.state);
@@ -214,20 +236,18 @@ class Container extends Component {
             </div>
           ))}
         </div>
-        <InputGroup
-          style={{
-            float: "left",
-            margin: "0 40px 30px 0",
-            width: "300px"
-          }}
-        >
-          <Input onChange={this.handleClickTitle} placeholder="Add title" />
-          <InputGroupAddon addonType="append">
-            <Button color="secondary" onClick={this.hadleClickAddtodo}>
-              To the Right!
-            </Button>
-          </InputGroupAddon>
-        </InputGroup>
+        {this.state.addBtn ? (
+          <AddTitle
+            value={this.props.match.params.B_key}
+            addcontainer={this.state.addcontainer}
+            addBtn={this.state.addBtn}
+            addfx={this.state.addfx}
+            fetchcontainer={this.fetchcontainer}
+            handleClickCancelBtn={this.handleClickCancelBtn}
+          />
+        ) : (
+          <button onClick={this.handleClickAddBtn}>Add title</button>
+        )}
       </div>
     );
   }
