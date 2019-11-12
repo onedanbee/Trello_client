@@ -18,7 +18,8 @@ class App extends React.Component {
       user_password: "",
       U_key: "",
       board_update: false,
-      user_password_update: ""
+      user_password_update: "",
+      leave: false
     };
     console.log("sessionStorage", sessionStorage);
     console.log(this.state);
@@ -115,10 +116,22 @@ class App extends React.Component {
       user_password_update: e.target.value
     });
   };
-  // this.setState({
-  //   user_id: e.target.value,
-  //   login: localStorajsone.token !== undefined
-  // });
+
+  handleClickUserDelete = async () => {
+    await fetch(`http://localhost:3000/sign/${this.state.U_key}`, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+        token: sessionStorage.getItem("token")
+      }
+    }).then(
+      res => res.json(),
+
+      this.setState({ leave: true }),
+      alert("회원탈퇴가 완료되었습니다."),
+      this.handleClickLogout()
+    );
+  };
 
   render() {
     console.log("token아 있니", this.state.isLogin);
@@ -169,6 +182,8 @@ class App extends React.Component {
                 <Mypage
                   handleClickMypagePw={this.handleClickMypagePw}
                   onChangeUpdatePw={this.onChangeUpdatePw}
+                  handleClickUserDelete={this.handleClickUserDelete}
+                  leave={this.state.leave}
                 />
               )}
             />
