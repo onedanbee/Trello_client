@@ -12,7 +12,11 @@ import {
   Button,
   CardText,
   InputGroup,
-  InputGroupAddon
+  InputGroupAddon,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown
 } from "reactstrap";
 
 class Container extends Component {
@@ -29,7 +33,9 @@ class Container extends Component {
       card_update: false,
       addBtn: false,
       addcontainer: "",
-      addfx: this.onChangeTitle
+      addfx: this.onChangeTitle,
+      clickMd: false,
+      c_title: ""
     };
 
     // , click: "false", title: "", container_key:""
@@ -58,9 +64,6 @@ class Container extends Component {
 
   toggle = e => {
     this.setState({ modal: true, card_n: e.target.id });
-  };
-  togglecancel = () => {
-    this.setState({ modal: false });
   };
 
   handleClickTitle = e => {
@@ -144,6 +147,54 @@ class Container extends Component {
       addcontainer: e.target.value
     });
   };
+
+  handleClickContainerDelete = async e => {
+    console.log("event", e.target);
+    let body = {
+      C_key: e.target.id
+    };
+    await fetch(`http://localhost:3000/containers/${e.target.id}`, {
+      method: "DELETE",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-type": "application/json",
+        token: sessionStorage.getItem("token")
+      }
+    }).then(
+      res => res.json(),
+
+      this.setState({ card_update: true }),
+      alert("삭제가 완료")
+    );
+    this.fetchcontainer();
+  };
+
+  handleClickContainerModify = async e => {
+    console.log("event", e.target);
+    let body = { c_title: this.state.c_title };
+    await fetch(`http://localhost:3000/containers/${e.target.id}`, {
+      method: "PUT",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-type": "application/json",
+        token: sessionStorage.getItem("token")
+      }
+    }).then(
+      res => res.json(),
+
+      this.setState({ card_update: true }),
+      alert("수정완료")
+    );
+    this.fetchcontainer();
+  };
+
+  handleClickC_title = e => {
+    e.preventDefault();
+    this.setState({
+      c_title: e.target.value
+    });
+  };
+
   render() {
     console.log("state :", this.state);
     return (
@@ -157,8 +208,38 @@ class Container extends Component {
                 width: "300px"
               }}
             >
-              <CardHeader onClick={this.handleClciktitle}>
-                {val.c_title}
+              <CardHeader>
+                <UncontrolledDropdown>
+                  <DropdownToggle
+                    style={{
+                      backgroundColor: "#F7F7F7",
+                      color: "black",
+                      border: "0"
+                    }}
+                  >
+                    {val.c_title}
+                  </DropdownToggle>
+
+                  <DropdownMenu>
+                    <Input
+                      id={val.C_key}
+                      placeholder="수정할 내용을 입력해주세요"
+                      onChange={this.handleClickC_title}
+                    ></Input>
+                    <DropdownItem
+                      id={val.C_key}
+                      onClick={this.handleClickContainerModify}
+                    >
+                      Modify
+                    </DropdownItem>
+                    <DropdownItem
+                      id={val.C_key}
+                      onClick={this.handleClickContainerDelete}
+                    >
+                      Delete
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
               </CardHeader>
 
               <span>
