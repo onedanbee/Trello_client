@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import AddTitle from "../components/AddTitle";
 import {
   Card,
@@ -199,6 +200,7 @@ class Container extends Component {
     console.log("state :", this.state);
     return (
       <div>
+        {!sessionStorage.getItem("token") && <Redirect to="/" />}
         <div style={{ margin: "50px 0 0 30px" }}>
           {this.state.containerlist.map(val => (
             <div

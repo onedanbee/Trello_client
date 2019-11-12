@@ -6,6 +6,8 @@ import SignUp from "./pages/SignUp";
 import Pages from "./pages/Pages";
 import Menu from "./components/Menu";
 import Container from "./pages/Container";
+import Mypage from "./pages/Mypage";
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -13,9 +15,13 @@ class App extends React.Component {
       user_id: "",
       isLogin: "",
       user_email: "",
-      user_password: ""
+      user_password: "",
+      U_key: "",
+      board_update: false,
+      user_password_update: ""
     };
     console.log("sessionStorage", sessionStorage);
+    console.log(this.state);
   }
 
   handleClickEmail = e => {
@@ -65,7 +71,12 @@ class App extends React.Component {
           console.log(json.token);
           sessionStorage.setItem("token", json.token);
           console.log(sessionStorage.getItem("token"));
-          this.setState({ isLogin: json.isLogin, user_id: json.user_id });
+          this.setState({
+            isLogin: json.isLogin,
+            user_id: json.user_id,
+            U_key: json.U_key
+          });
+          console.log(this.state);
           alert("로그인 완료");
         } else {
           alert("다시 로그인을 시도해주세요");
@@ -73,6 +84,37 @@ class App extends React.Component {
       });
   };
 
+  handleClickMypagePw = async () => {
+    if (this.state.user_password_update !== "") {
+      let body = {
+        user_id: this.state.user_id,
+        user_email: this.state.user_email,
+        user_password: this.state.user_password_update
+      };
+      await fetch(`http://localhost:3000/sign/${this.state.U_key}`, {
+        method: "PUT",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-type": "application/json",
+          token: sessionStorage.getItem("token")
+        }
+      }).then(
+        res => res.json(),
+
+        this.setState({ card_update: true }),
+        alert("수정완료"),
+        this.handleClickLogout()
+      );
+    } else {
+      alert("수정할 비밀번호를 입력해주세요.");
+    }
+  };
+
+  onChangeUpdatePw = e => {
+    this.setState({
+      user_password_update: e.target.value
+    });
+  };
   // this.setState({
   //   user_id: e.target.value,
   //   login: localStorajsone.token !== undefined
@@ -110,11 +152,26 @@ class App extends React.Component {
             <Route
               path="/pages"
               render={() => (
-                <Pages handleClickLogout={this.handleClickLogout} />
+                <Pages
+                  handleClickLogout={this.handleClickLogout}
+                  U_key={this.state.U_key}
+                />
               )}
             />
             <Route path="/signup" component={SignUp} />
             <Route path="/board/:B_key" component={Container} />
+            <Route
+              path="/mypage"
+              // component={Mypage}
+              // handleClickMypagePw={this.handleClickMypagePw}
+              // onChangeUpdatePw={this.onChangeUpdatePw}
+              render={() => (
+                <Mypage
+                  handleClickMypagePw={this.handleClickMypagePw}
+                  onChangeUpdatePw={this.onChangeUpdatePw}
+                />
+              )}
+            />
           </Router>
         </div>
       </div>

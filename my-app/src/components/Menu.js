@@ -8,7 +8,7 @@ const Menu = props => {
       <Nav>
         <NavItem style={{ margin: "0 40px 0 20px" }}>
           <Link style={{ color: "white" }} to="/pages">
-            board
+            Board
           </Link>
         </NavItem>
 
@@ -23,6 +23,9 @@ const Menu = props => {
           >
             Logout
           </span>
+        </NavItem>
+        <NavItem>
+          <Link to="/mypage">Mypage</Link>
         </NavItem>
       </Nav>
     </div>
