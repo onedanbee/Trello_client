@@ -37,8 +37,9 @@ class Addboard extends Component {
           float: "left",
           margin: "0 40px 30px 0",
           width: "300px",
-          backgroundColor: "#F5C475",
-          padding: "5px"
+          backgroundColor: "#ffc266",
+          padding: "5px",
+          borderRadius: "5px"
         }}
       >
         <Input
@@ -49,9 +50,11 @@ class Addboard extends Component {
           <InputGroupAddon addonType="append">
             <Button
               style={{
-                background: "#F09F48",
+                background: "#FE9A2E",
                 border: "0",
-                marginLeft: "167px"
+                marginLeft: "100px",
+                width: "160px",
+                borderRadius: "3px"
               }}
               onClick={this.hadleClickAddBoard}
             >
@@ -59,7 +62,7 @@ class Addboard extends Component {
             </Button>
             <Button
               style={{
-                background: "#F09F48",
+                background: "#FE9A2E",
                 border: "0",
                 width: "30px"
               }}

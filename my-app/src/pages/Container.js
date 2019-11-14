@@ -24,6 +24,7 @@ class Container extends Component {
   constructor({ match, props }) {
     super({ match, props });
     console.log("match!!", match);
+    console.log("props!!!!!!!", props);
     console.log("history", this.props.history);
 
     this.state = {
@@ -201,7 +202,10 @@ class Container extends Component {
     return (
       <div>
         {!sessionStorage.getItem("token") && <Redirect to="/" />}
-        <div style={{ margin: "50px 0 0 30px" }}>
+        <h4 style={{ color: "#6D757C", padding: "30px 0 0 20px" }}>
+          Your Todo
+        </h4>
+        <div style={{ margin: "30px 0 0 30px" }}>
           {this.state.containerlist.map(val => (
             <div
               style={{
@@ -329,7 +333,12 @@ class Container extends Component {
             handleClickCancelBtn={this.handleClickCancelBtn}
           />
         ) : (
-          <button onClick={this.handleClickAddBtn}>Add title</button>
+          <Button
+            onClick={this.handleClickAddBtn}
+            style={{ marginLeft: "30px" }}
+          >
+            Add title
+          </Button>
         )}
       </div>
     );
