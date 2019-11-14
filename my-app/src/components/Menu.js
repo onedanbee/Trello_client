@@ -25,7 +25,9 @@ const Menu = props => {
           </span>
         </NavItem>
         <NavItem>
-          <Link to="/mypage">Mypage</Link>
+          <Link style={{ color: "white" }} to="/mypage">
+            Mypage
+          </Link>
         </NavItem>
       </Nav>
     </div>

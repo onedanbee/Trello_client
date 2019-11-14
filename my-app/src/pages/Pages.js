@@ -62,34 +62,73 @@ class Pages extends Component {
     return (
       <div>
         {!sessionStorage.getItem("token") && <Redirect to="/" />}
+        <h4
+          style={{
+            paddingTop: "30px",
+            color: "#6290B9",
+            marginLeft: "5%"
+          }}
+        >
+          Your Board List
+        </h4>
+        <div
+          style={{
+            width: "90%",
+            margin: "0 auto",
+            height: "100%"
+          }}
+        >
+          {this.state.boardlist.map(val => (
+            <ButtonGroup
+              style={{
+                width: "200px",
+                margin: "20px 90px 0 0"
+              }}
+            >
+              <Link to={`/board/${val.B_key}`}>
+                <Button
+                  style={{
+                    width: "200px",
+                    height: "60px",
+                    backgroundColor: "#FE9A2E",
+                    border: "0"
+                  }}
+                >
+                  {val.b_title}
+                </Button>
+              </Link>
+              <Button
+                style={{ backgroundColor: "#FE9A2E", border: "0" }}
+                id={val.b_title}
+                onClick={this.handleClickboardDelete}
+              >
+                X
+              </Button>
+            </ButtonGroup>
+          ))}
 
-        {this.state.boardlist.map(val => (
-          <ButtonGroup>
-            <Link to={`/board/${val.B_key}`}>
-              <Button>{val.b_title}</Button>
-            </Link>
-            <Button id={val.b_title} onClick={this.handleClickboardDelete}>
-              X
+          {this.state.Bbtn ? (
+            <Addboard
+              handleClickAddboardBtnCancel={this.handleClickAddboardBtnCancel}
+              onChangeboardTitle={this.onChangeboardTitle}
+              boardTitle={this.state.boardTitle}
+              fetchboard={this.fetchboard}
+              U_key={this.props.U_key}
+            />
+          ) : (
+            <Button
+              onClick={this.handleClickAddboardBtn}
+              style={{
+                width: "150px",
+                marginTop: "20px",
+                backgroundColor: "#ffc266",
+                border: "0"
+              }}
+            >
+              Add Board
             </Button>
-          </ButtonGroup>
-        ))}
-
-        {this.state.Bbtn ? (
-          <Addboard
-            handleClickAddboardBtnCancel={this.handleClickAddboardBtnCancel}
-            onChangeboardTitle={this.onChangeboardTitle}
-            boardTitle={this.state.boardTitle}
-            fetchboard={this.fetchboard}
-            U_key={this.props.U_key}
-          />
-        ) : (
-          <Button
-            style={{ marginLeft: "30px" }}
-            onClick={this.handleClickAddboardBtn}
-          >
-            Add Board
-          </Button>
-        )}
+          )}
+        </div>
       </div>
     );
   }
