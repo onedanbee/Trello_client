@@ -37,7 +37,8 @@ class Container extends Component {
       addcontainer: "",
       addfx: this.onChangeTitle,
       clickMd: false,
-      c_title: ""
+      c_title: "",
+      c_title_list: []
     };
 
     // , click: "false", title: "", container_key:""
@@ -197,6 +198,46 @@ class Container extends Component {
     });
   };
 
+  handleClickContainerTitle = async () => {
+    let container_name = await fetch(
+      `http://localhost:3000/containers/${this.props.match.params.B_key}/list`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          token: sessionStorage.getItem("token")
+        }
+      }
+    ).then(res => res.json());
+
+    this.setState({ c_title_list: container_name });
+  };
+
+  handleClickMove = async e => {
+    console.log("event", e.target);
+    let body = { C_key: e.target.id };
+    await fetch(`http://localhost:3000/cards/${this.state.card_n}/move`, {
+      method: "PUT",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-type": "application/json",
+        token: sessionStorage.getItem("token")
+      }
+    }).then(
+      res => res.json(),
+
+      this.setState({ card_update: true }),
+      alert("수정완료")
+    );
+    this.fetchcontainer();
+  };
+
+  onClickCard_key = async e => {
+    this.setState({
+      card_n: e.target.id
+    });
+  };
+
   render() {
     console.log("state :", this.state);
     return (
@@ -255,7 +296,7 @@ class Container extends Component {
                       <CardText
                         id={card.card_key}
                         onClick={this.toggle}
-                        style={{ width: "89%", float: "left" }}
+                        style={{ width: "78%", float: "left" }}
                       >
                         {card.card_text}
                       </CardText>
@@ -297,6 +338,50 @@ class Container extends Component {
                       >
                         x
                       </Button>
+                      {/* <Button
+                        style={{
+                          width: "6%",
+                          float: "left",
+                          fontSize: "13px",
+                          color: "black",
+                          backgroundColor: "white",
+                          border: "0",
+                          marginTop: "4px"
+                        }}
+                        onClick={this.handleClickContainerTitle}
+                      >
+                        ▶︎
+                      </Button> */}
+
+                      <UncontrolledDropdown
+                        onClick={this.handleClickContainerTitle}
+                      >
+                        <DropdownToggle
+                          style={{
+                            width: "5%",
+                            float: "left",
+                            fontSize: "16px",
+                            color: "black",
+                            backgroundColor: "white",
+                            border: "0",
+                            marginTop: "1px"
+                          }}
+                          id={card.card_key}
+                          onClick={this.onClickCard_key}
+                        >
+                          ▶︎
+                        </DropdownToggle>
+                        <DropdownMenu>
+                          {this.state.c_title_list.map(list => (
+                            <DropdownItem
+                              id={list.C_key}
+                              onClick={this.handleClickMove}
+                            >
+                              {list.c_title}
+                            </DropdownItem>
+                          ))}
+                        </DropdownMenu>
+                      </UncontrolledDropdown>
                     </CardBody>
                   </Card>
                 ))}
