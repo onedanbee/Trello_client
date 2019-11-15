@@ -88,7 +88,7 @@ class Pages extends Component {
               <Link to={`/board/${val.B_key}`}>
                 <Button
                   style={{
-                    width: "200px",
+                    width: "160px",
                     height: "60px",
                     backgroundColor: "#FE9A2E",
                     border: "0"

@@ -38,7 +38,9 @@ class Container extends Component {
       addfx: this.onChangeTitle,
       clickMd: false,
       c_title: "",
-      c_title_list: []
+      c_title_list: [],
+      board_title: "",
+      T_input: false
     };
 
     // , click: "false", title: "", container_key:""
@@ -46,8 +48,25 @@ class Container extends Component {
 
   componentDidMount = async () => {
     await this.fetchcontainer();
+    await this.fetchboardTitle();
     // this.setState({ containerlist: container });
     console.log(this.state);
+  };
+
+  fetchboardTitle = async () => {
+    let boardTitle = await fetch(
+      `http://localhost:3000/boards/${this.props.match.params.B_key}/now`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          token: sessionStorage.getItem("token")
+        }
+      }
+    ).then(res => res.json());
+    console.log(boardTitle);
+
+    this.setState({ board_title: boardTitle });
   };
 
   fetchcontainer = async () => {
@@ -61,6 +80,7 @@ class Container extends Component {
         }
       }
     ).then(res => res.json());
+    // this.fetchboardTitle();
 
     this.setState({ containerlist: container });
   };
@@ -238,13 +258,64 @@ class Container extends Component {
     });
   };
 
+  handleCilckChangeInput = e => {
+    this.setState({
+      T_input: true
+    });
+  };
+
+  onChangeC_Title = e => {
+    this.setState({
+      c_title: e.target.value
+    });
+  };
+
+  handleClickC_title_fetch = async e => {
+    console.log("event", e.target);
+    if (e.key === "Enter") {
+      let body = { b_title: this.state.c_title };
+      await fetch(
+        `http://localhost:3000/boards/${this.props.match.params.B_key}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(body),
+          headers: {
+            "Content-type": "application/json",
+            token: sessionStorage.getItem("token")
+          }
+        }
+      ).then(
+        res => res.json(),
+
+        this.setState({ card_update: true, T_input: false }),
+        alert("수정완료")
+      );
+      this.fetchboardTitle();
+    }
+  };
+
   render() {
     console.log("state :", this.state);
     return (
       <div>
         {!sessionStorage.getItem("token") && <Redirect to="/" />}
-        <h4 style={{ color: "#6D757C", padding: "30px 0 0 20px" }}>
-          Your Todo
+        <h4 style={{ color: "#6D757C", padding: "30px 0 0 20px", border: "0" }}>
+          {this.state.T_input ? (
+            <Input
+              style={{ width: "200px" }}
+              onChange={this.onChangeC_Title}
+              onKeyPress={this.handleClickC_title_fetch}
+            >
+              <Button></Button>
+            </Input>
+          ) : (
+            <button
+              style={{ border: "0" }}
+              onClick={this.handleCilckChangeInput}
+            >
+              {this.state.board_title.b_title}
+            </button>
+          )}
         </h4>
         <div style={{ margin: "30px 0 0 30px" }}>
           {this.state.containerlist.map(val => (
@@ -252,7 +323,8 @@ class Container extends Component {
               style={{
                 float: "left",
                 margin: "0 40px 30px 0",
-                width: "300px"
+                width: "300px",
+                borderRadius: "5px"
               }}
             >
               <CardHeader>
