@@ -4,28 +4,31 @@ import { Input, Button, InputGroup, InputGroupAddon } from "reactstrap";
 class AddTitle extends Component {
   constructor(props) {
     super(props);
-    console.log("props 받아오니", props);
   }
 
   hadleClickAddContainer = async () => {
-    let body = {
-      c_title: this.props.addcontainer,
-      B_key: this.props.value
-    };
-    await fetch(`http://localhost:3000/containers/`, {
-      method: "POST",
-      body: JSON.stringify(body),
-      headers: {
-        "Content-type": "application/json",
-        token: sessionStorage.getItem("token")
-      }
-    }).then(
-      res => res.json(),
+    if (this.props.addcontainer !== "") {
+      let body = {
+        c_title: this.props.addcontainer,
+        B_key: this.props.value
+      };
+      await fetch(`http://localhost:3000/containers/`, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-type": "application/json",
+          token: sessionStorage.getItem("token")
+        }
+      }).then(
+        res => res.json(),
 
-      this.props.handleClickCancelBtn(),
-      alert("추가 되었습니다.")
-    );
-    this.props.fetchcontainer();
+        this.props.handleClickCancelBtn(),
+        alert("추가 되었습니다.")
+      );
+      this.props.T_reset();
+    } else {
+      alert("내용을 다시 입력해 주세요");
+    }
   };
 
   render() {

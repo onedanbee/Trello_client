@@ -23,9 +23,6 @@ import {
 class Container extends Component {
   constructor({ match, props }) {
     super({ match, props });
-    console.log("match!!", match);
-    console.log("props!!!!!!!", props);
-    console.log("history", this.props.history);
 
     this.state = {
       containerlist: [],
@@ -42,15 +39,11 @@ class Container extends Component {
       board_title: "",
       T_input: false
     };
-
-    // , click: "false", title: "", container_key:""
   }
 
   componentDidMount = async () => {
     await this.fetchcontainer();
     await this.fetchboardTitle();
-    // this.setState({ containerlist: container });
-    console.log(this.state);
   };
 
   fetchboardTitle = async () => {
@@ -64,7 +57,6 @@ class Container extends Component {
         }
       }
     ).then(res => res.json());
-    console.log(boardTitle);
 
     this.setState({ board_title: boardTitle });
   };
@@ -80,7 +72,6 @@ class Container extends Component {
         }
       }
     ).then(res => res.json());
-    // this.fetchboardTitle();
 
     this.setState({ containerlist: container });
   };
@@ -97,7 +88,6 @@ class Container extends Component {
   };
 
   handleClickTest = async e => {
-    console.log("event", e.target);
     await fetch(`http://localhost:3000/cards/${e.target.id}`, {
       method: "DELETE",
       headers: {
@@ -132,25 +122,28 @@ class Container extends Component {
   };
 
   hadleClickAddtodo = async e => {
-    console.log(e.target.id);
-    let body = {
-      card_text: this.state.card_modify,
-      C_key: e.target.id
-    };
-    await fetch(`http://localhost:3000/cards/`, {
-      method: "POST",
-      body: JSON.stringify(body),
-      headers: {
-        "Content-type": "application/json",
-        token: sessionStorage.getItem("token")
-      }
-    }).then(
-      res => res.json(),
+    if (this.state.card_modify !== "") {
+      let body = {
+        card_text: this.state.card_modify,
+        C_key: e.target.id
+      };
+      await fetch(`http://localhost:3000/cards/`, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-type": "application/json",
+          token: sessionStorage.getItem("token")
+        }
+      }).then(
+        res => res.json(),
 
-      this.setState({ modal: false, card_update: true }),
-      alert("추가 되었습니다.")
-    );
-    this.fetchcontainer();
+        this.setState({ modal: false, card_update: true }),
+        alert("추가 되었습니다.")
+      );
+      this.fetchcontainer();
+    } else {
+      alert("내용을 입력해 주세요");
+    }
   };
 
   handleClickAddBtn = () => {
@@ -171,8 +164,13 @@ class Container extends Component {
     });
   };
 
+  T_reset = () => {
+    this.setState({
+      addcontainer: ""
+    });
+  };
+
   handleClickContainerDelete = async e => {
-    console.log("event", e.target);
     let body = {
       C_key: e.target.id
     };
@@ -193,7 +191,6 @@ class Container extends Component {
   };
 
   handleClickContainerModify = async e => {
-    console.log("event", e.target);
     let body = { c_title: this.state.c_title };
     await fetch(`http://localhost:3000/containers/${e.target.id}`, {
       method: "PUT",
@@ -234,7 +231,6 @@ class Container extends Component {
   };
 
   handleClickMove = async e => {
-    console.log("event", e.target);
     let body = { C_key: e.target.id };
     await fetch(`http://localhost:3000/cards/${this.state.card_n}/move`, {
       method: "PUT",
@@ -271,7 +267,6 @@ class Container extends Component {
   };
 
   handleClickC_title_fetch = async e => {
-    console.log("event", e.target);
     if (e.key === "Enter") {
       let body = { b_title: this.state.c_title };
       await fetch(
@@ -295,7 +290,6 @@ class Container extends Component {
   };
 
   render() {
-    console.log("state :", this.state);
     return (
       <div>
         {!sessionStorage.getItem("token") && <Redirect to="/" />}
@@ -410,20 +404,6 @@ class Container extends Component {
                       >
                         x
                       </Button>
-                      {/* <Button
-                        style={{
-                          width: "6%",
-                          float: "left",
-                          fontSize: "13px",
-                          color: "black",
-                          backgroundColor: "white",
-                          border: "0",
-                          marginTop: "4px"
-                        }}
-                        onClick={this.handleClickContainerTitle}
-                      >
-                        ▶︎
-                      </Button> */}
 
                       <UncontrolledDropdown
                         onClick={this.handleClickContainerTitle}
@@ -457,13 +437,6 @@ class Container extends Component {
                     </CardBody>
                   </Card>
                 ))}
-                {/* <Button
-                  onClick={this.toggle}
-                  isOpen={this.state.modal}
-                  container_key={val.C_key}
-                >
-                  Add card
-                </Button> */}
                 <InputGroup>
                   <Input onChange={this.handleClickTitle} />
                   <InputGroupAddon addonType="append">
@@ -488,6 +461,7 @@ class Container extends Component {
             addfx={this.state.addfx}
             fetchcontainer={this.fetchcontainer}
             handleClickCancelBtn={this.handleClickCancelBtn}
+            T_reset={this.T_reset}
           />
         ) : (
           <Button

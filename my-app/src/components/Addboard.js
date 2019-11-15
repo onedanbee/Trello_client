@@ -4,7 +4,6 @@ import { Input, Button, InputGroup, InputGroupAddon } from "reactstrap";
 class Addboard extends Component {
   constructor(props) {
     super(props);
-    console.log("뭔가요", props);
   }
 
   hadleClickAddBoard = async () => {
