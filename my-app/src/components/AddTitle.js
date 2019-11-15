@@ -25,6 +25,7 @@ class AddTitle extends Component {
         this.props.handleClickCancelBtn(),
         alert("추가 되었습니다.")
       );
+      this.props.fetchcontainer();
       this.props.T_reset();
     } else {
       alert("내용을 다시 입력해 주세요");
