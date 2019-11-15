@@ -1,9 +1,8 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import { Input, Button, Label, FormGroup, CustomInput } from "reactstrap";
+import { Input, Button, Label, CustomInput } from "reactstrap";
 
 const Mypage = props => {
-  console.log("mypage", props);
   return (
     <div
       style={{
@@ -82,8 +81,6 @@ const Mypage = props => {
           탈퇴하기
         </Button>
       </div>
-
-      {/* {props.leave && <Redirect to="/" />} */}
     </div>
   );
 };

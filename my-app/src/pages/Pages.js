@@ -7,8 +7,6 @@ class Pages extends Component {
   constructor(props) {
     super(props);
     this.state = { boardlist: [], Bbtn: false, boardTitle: "" };
-    console.log("boardTitle", this.state.boardTitle);
-    console.log("pages props", this.props);
   }
 
   componentDidMount = async () => {
@@ -58,7 +56,6 @@ class Pages extends Component {
   };
 
   render() {
-    console.log(this.state.boardTitle);
     return (
       <div>
         {!sessionStorage.getItem("token") && <Redirect to="/" />}

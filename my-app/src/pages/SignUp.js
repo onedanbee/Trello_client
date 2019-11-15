@@ -51,11 +51,8 @@ class SignUp extends Component {
     } else {
       alert("다시 작성해주세요");
     }
-
-    console.log("this.state", this.state);
   };
   render() {
-    console.log("dsadsdasdsadddd", this.state);
     return (
       <div>
         {this.state.isSignup && <Redirect to="/" />}

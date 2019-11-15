@@ -21,8 +21,6 @@ class App extends React.Component {
       user_password_update: "",
       leave: false
     };
-    console.log("sessionStorage", sessionStorage);
-    console.log(this.state);
   }
 
   handleClickEmail = e => {
@@ -45,7 +43,6 @@ class App extends React.Component {
     this.setState({
       isLogin: false
     });
-    console.log(sessionStorage.getItem("token"));
   };
 
   handleClick = e => {
@@ -54,7 +51,6 @@ class App extends React.Component {
       user_email: this.state.user_email,
       user_password: this.state.user_password
     };
-    console.log(body);
     fetch("http://localhost:3000/sign/signin", {
       method: "POST",
       body: JSON.stringify(body),
@@ -64,20 +60,16 @@ class App extends React.Component {
     })
       .then(res => res.json())
       .then(json => {
-        console.log(json);
         return json;
       })
       .then(json => {
         if (json.isLogin) {
-          console.log(json.token);
           sessionStorage.setItem("token", json.token);
-          console.log(sessionStorage.getItem("token"));
           this.setState({
             isLogin: json.isLogin,
             user_id: json.user_id,
             U_key: json.U_key
           });
-          console.log(this.state);
           alert("로그인 완료");
         } else {
           alert("다시 로그인을 시도해주세요");
@@ -134,7 +126,6 @@ class App extends React.Component {
   };
 
   render() {
-    console.log("token아 있니", this.state.isLogin);
     return (
       <div>
         <Header />
@@ -144,12 +135,6 @@ class App extends React.Component {
             {sessionStorage.getItem("token") ? (
               <Menu handleClickLogout={this.handleClickLogout} />
             ) : null}
-
-            {/* {sessionStorage.getItem("token") ? (
-              <Redirect to="/pages" />
-            ) : (
-              <Redirect to="/" />
-            )} */}
             <Route
               exact
               path="/"
@@ -175,9 +160,6 @@ class App extends React.Component {
             <Route path="/board/:B_key" component={Container} />
             <Route
               path="/mypage"
-              // component={Mypage}
-              // handleClickMypagePw={this.handleClickMypagePw}
-              // onChangeUpdatePw={this.onChangeUpdatePw}
               render={() => (
                 <Mypage
                   handleClickMypagePw={this.handleClickMypagePw}
