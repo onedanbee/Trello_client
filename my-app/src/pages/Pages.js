@@ -79,6 +79,7 @@ class Pages extends Component {
             <ButtonGroup
               style={{
                 width: "200px",
+                height: "100px",
                 margin: "20px 90px 0 0"
               }}
             >
@@ -86,7 +87,7 @@ class Pages extends Component {
                 <Button
                   style={{
                     width: "160px",
-                    height: "60px",
+                    height: "100px",
                     backgroundColor: "#FE9A2E",
                     border: "0"
                   }}

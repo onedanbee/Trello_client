@@ -46,7 +46,6 @@ class App extends React.Component {
   };
 
   handleClick = e => {
-    e.preventDefault();
     let body = {
       user_email: this.state.user_email,
       user_password: this.state.user_password

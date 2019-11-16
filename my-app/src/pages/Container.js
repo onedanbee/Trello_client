@@ -80,6 +80,10 @@ class Container extends Component {
     this.setState({ modal: true, card_n: e.target.id });
   };
 
+  togglecancel = e => {
+    this.setState({ modal: false });
+  };
+
   handleClickTitle = e => {
     e.preventDefault();
     this.setState({
@@ -383,7 +387,7 @@ class Container extends Component {
                             onClick={this.toggle}
                             onClick={this.handleClickTitleFetch}
                           >
-                            Do Something
+                            Modify
                           </Button>{" "}
                           <Button color="secondary" onClick={this.togglecancel}>
                             Cancel
@@ -400,7 +404,7 @@ class Container extends Component {
                           color: "black",
                           border: "0px"
                         }}
-                        onClick={this.handleClickTest}
+                        onClick={this.togglecancel}
                       >
                         x
                       </Button>

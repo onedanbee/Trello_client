@@ -34,7 +34,7 @@ class Addboard extends Component {
       <div
         style={{
           float: "left",
-          margin: "0 40px 30px 0",
+          margin: "20px 40px 30px 0",
           width: "300px",
           backgroundColor: "#ffc266",
           padding: "5px",

@@ -40,7 +40,8 @@ class AddTitle extends Component {
           margin: "0 40px 30px 0",
           width: "300px",
           backgroundColor: "#F5C475",
-          padding: "5px"
+          padding: "5px",
+          borderRadius: "5px"
         }}
       >
         <Input placeholder="Write your todo" onChange={this.props.addfx} />
