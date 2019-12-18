@@ -1,43 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { Label, Input, Button } from "reactstrap";
 
 class Login extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = { user_password: "" };
-  //   console.log("스토리쥐!!!!", window.sessionStorage);
-  // }
-
-  // handlePassword = e => {
-  //   this.setState({
-  //     user_password: e.target.user_password
-  //   });
-  // };
-  // handleClick = e => {
-  //   e.preventDefault();
-  //   let body = {
-  //     us시r_email: "onsddd2123@naver.com",
-  //     user_password: "12300000"
-  //   };
-  //   fetch("http://localhost:3000/sign/signin", {
-  //     method: "POST",
-  //     body: JSON.stringify(body),
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     }
-  //   })
-  //     .then(res => res.json())
-  //     .then(res => {
-  //       alert("로그인 완료");
-  //     });
-  // };
-
   render() {
     const { handleClick, handleClickEmail, handleClickPw } = this.props;
 
     return (
       <div style={{ margin: "130px 0 200px 0" }}>
+        {sessionStorage.getItem("token") && <Redirect to="/pages" />}
         <div
           style={{
             width: "350px",
